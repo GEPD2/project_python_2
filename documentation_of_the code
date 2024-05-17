@@ -1,0 +1,313 @@
+Documentation:
+	Python version: 3.12.1 from https://www.python.org/downloads/release/python-3121/
+•	Libraries that been used:
+o	kivy
+o	time
+o	AppOpener
+o	requests
+o	bs4
+o	tkinter
+o	rembg
+o	matplotlib
+o	pylab
+o	IPython
+Code documentation:
+Firstly we use the Builer.load_string(“””#code to be executed”””)  in order to built the app for us and write less lines of code. We create our class named MyScreenManager(ScreenManager) which will control the three pages that we will create with kivy (SearchPager,MenuPage and ResultPage) and we add them names so we will use them instead in the Builder.load_string.
+Builder.load_string("""
+<MyScreenManager>:
+    SearchPage:
+        name: "search"
+    MenuPage:
+        name: "menu"
+    ResultPage:
+        name: "result"
+
+Inside the Builder.load_string we continue coding. We create our first class which is the SearchPage class. We then use the BoxLayout and we specify the orientation we want which in our case is the vertical one. We put Firstly at the top the user input data with the TextInput(),we give it an id which we can use latter in order to get the stored data that the user typed in the search bar,we specify the size hint of the bar (o,6 for x axis and 0.1 for y axis) and we remove the multiline by giving it the False value. The user can type a medicine but with a single line but not more than one. After that, we create a Label. It has a text to tell the user what to do (type a medicine) in a later stage it changes if the user will give a wrong value or no value to the TextInput value. We then add our first button with the Button().  We give it a name,an id to use it for later and specify the size of it (x and y axis),the position of it  (0.1 x and 0.1 y),shortly after we use the kivy Key words which are on_press and on_release. The on_press keyword let as inside the class to use a function after pressing the button named Search were we named the function search¬_data(). While releasing the button we change page and go to the third one (ResultPage) to see the results of the search. The second button that it has been added is named Menu,again we specify size,position and by releasing it we go to the second page which is the MenuPage. Then use of the The Camera function is to open the camera,an id is given,we specify the resolution (in our case is 640,480) ,Play keyword to False in order to not play by itself but when the user wants to take a picture and it’s height which is 48dp. We add 2 last button in the SearchPage which are the save locally and the search the taken photo buttons. The first one after pressing it stores the taken photo locally with the locally named function and the second one search results about the medicine,we mention that we use ocr (Optical Character Recognition) to search the medicine and give the user results with the search_photo function and we change page after the results.
+<SearchPage>:
+    BoxLayout:
+                          
+        orientation: 'vertical'                
+        TextInput:
+            id: text_user
+            hint_text:'Give the name of medicine'
+            size_hint_x: 0.6
+            size_hint_y: 0.1
+            multiline: False 
+        Label:
+            text: "type a medicine"
+            id:label
+            size_hint_y: None
+            height: '48dp'
+        Button:
+            text: "Search"
+            id: button_search
+            size_hint_x: 0.2
+            size_hint_y: 0.1
+            pos_hint_x: 0.1
+            pos_hint_y: 0.1
+            on_press: root.search_data()
+            on_release:
+                app.root.current = "result"
+            
+        Button:
+            text: "Menu"
+            size_hint_x: 0.2
+            size_hint_y: 0.1
+            pos_hint_x: 0.2
+            pos_hint_y: 0.2
+            on_release:
+                app.root.current = "menu"
+                    
+        Camera:
+            id: camera
+            resolution: (640, 480)
+            play: False
+        ToggleButton:
+            text: 'Play'
+            on_press: camera.play = not camera.play
+            size_hint_y: None
+            height: '48dp'
+        Button:
+            text: 'save locally'
+            size_hint_y: None
+            height: '48dp'
+            on_press: root.locally()
+        Button:
+            text: "search the taken photo"
+            size_hint_y: None
+            height: '48dp'
+            on_press: 
+                root.search_photo()
+                app.root.current = "result"
+
+After the creation of the first page we then create as a second page the menu page. We use again the BoxLayout and we use the same orientation which is the vertical one. Then, we create the first label ,with specify the size and the position in order to inform the users that they can take a photo from their drive and search about the medicine.  We create a functional button named drive to open the file explorer and choose a photo. After the choice of the user the photo is getting chopped, we remove the noise that it may be behind, so the search of the medicine will be more accurate and it leads the user to the third page named ResultPage. Also we add 3 more labels,with specific size,position and text to inform the users. The first label informs the user that under the other labels will specify what results we bring to the users. In the end of this page we make a functional button named search which changes page and transfers the user to the first page. 
+<MenuPage>:
+    
+    BoxLayout:
+        
+        orientation: 'vertical'
+                    
+        Label:
+            text: 'photos from drive'
+            size_hint_center_x: 0.25
+            size_hint_center_y: 0.17
+            pos_hint_center_x: 0.13         
+            pos_hint_center_y: 0.15
+        Button:
+            text: 'drive'
+            size_hint_y: None
+            height: '48dp'
+            on_press: 
+                root.explorer()
+                app.root.current = "result"                                  
+                                       
+        Label:
+            text: 'information for the medicine'
+            size_hint_center_x: 0.3
+            size_hint_center_y: 0.2
+            pos_hint_center_x: 0.2           
+            pos_hint_center_y: 0.2
+                    
+                    
+        Label:
+            text: "where it's been used"
+            size_hint_center_x: 0.3
+            size_hint_center_y: 0.2
+            pos_hint_center_x: 0.2           
+            pos_hint_center_y: 0.2
+        
+        Label:
+            text: 'side effects'
+            size_hint_center_x: 0.3
+            size_hint_center_y: 0.2
+            pos_hint_center_x: 0.2           
+            pos_hint_center_y: 0.2
+
+        Button:
+            text: "Search"
+            size_hint_center_x: 0.5
+            size_hint_center_y: 0.5
+            pos_hint_center_x: 0.4           
+            pos_hint_center_y: 0.4
+            on_release:
+                app.root.current = "search"
+
+In the last page, the ResultPage, we use BoxLayout with the default orientation and we add one label and 2 buttons. The label is empty and has unspecified size and position. The first button named show results while it gets released returns the results from the search to the label and the second button named back it leads the user to the first page.
+<ResultPage>:
+    BoxLayout:
+        Label:
+            text: ""
+            id: medicine_results
+        Button:
+            text: "show results"
+            size_hint_x: 0.2
+            size_hint_y: 0.1
+            pos_hint_x: 0.2
+            pos_hint_y: 0.2
+            on_press: root.med_results()
+        Button:
+            text: "back"
+            size_hint_x: 0.2
+            size_hint_y: 0.1
+            pos_hint_x: 0.2
+            pos_hint_y: 0.2
+            on_release:
+                app.root.current = "search"
+
+In the class named SearchPage we added a function named locally which activates the camera and when the button named save locally it takes the data from the clock of the user,then it names the  photo (example IMG_20240507_202642) and it saves in the folder that the user gave. We use the global statement in order to pass the values outside of the functions because the function can bring one and only result but with this statement it passes them to the whole program and we can change them if we want.
+def locally(self):
+        global folder
+        folder=askdirectory()
+        camera = self.ids['camera']
+        timestr = time.strftime("%Y%m%d_%H%M%S")
+        camera.export_to_png("{}/IMG_{}.png".format(folder,timestr))
+        global date
+        date=timestr
+
+More over, we have a second function named search_data which take the data that the user typed in the TextInput ,then we convert them to text form and make a global statement where we gonna pass the results from the search or any message while an error will occur. If the users will give no medicine and the TextInput is empty after pressing search the users will be inform in the third page that they didn’t typed a medicine after releasing the show results button of course. Otherwise, we do a request to the galinos website *1 . If the response of the server is 200 then this means that this medicine exists in the website and it has information that we will get from it. We then convert the response of the server into text as an html code *2, we use the Beautiful sup to parse the html code and then we search a specific class named container-lg-4 and for every paragraph that it contains we get the text from it and we add it to the results. Otherwise, the users must mistyped the medicine or it doesn’t exists in the website.
+def search_data(self):
+     	  #the medicine takes the data that are stored in the Textinput
+        medicine=self.ids['text_user']
+        user= medicine.text
+        #we take our global label_results
+        global label_results
+        if user == "":
+            #we change the text of the label if the user search accidentaly an empty textinput
+            txt='No medicine was given'
+            error_handling=self.ids.label
+            error_handling.text=txt
+            label_results=txt
+        else:
+            url=("https://www.galinos.gr/web/drugs/main/drugs/{}".format(user))
+            #we format the data to the url in order to search the medicine
+            r = requests.get(url)
+            if r.status_code == 200:
+                #we do an api request to the website
+                htmldata=r.text
+                #with htmldata we take the results from the request and we make them a text
+                soup = BeautifulSoup(htmldata, 'html.parser') 
+                s_1 = soup.find('div', class_='container-lg my-4')
+                copy_data=""
+                data_1=""
+                for data_1 in s_1.find_all("p"):  
+                    copy_data+=data_1.get_text()
+                label_results=str(copy_data)
+            else:
+                #we change the text of the lebel if the respond is different from 200
+                txt='maybe you mistyped the medicine'
+                error_handling=self.ids.label
+                error_handling.text=txt
+                label_results=txt
+
+The last function for the SearchPage is the search_photo which removes the noise in the background of the photo that it was take,it saves it with new name, with optical recognition it converts the medicine into text and it uses the request (The galinos API) to the same thing as before. But if the data from the photo will be unclear it informs the users in the ResultPage 
+def search_photo(self):
+        #with the search_photo function we crop the current photo that we took
+        global folder
+        path=folder
+        global photo
+        global date
+        photo="{}/IMG_{}.png".format(path,date)
+        image_input=Image.open(photo)
+        outpout=remove(image_input)
+        output_path="{}/photo_sample.png".format(path)
+        outpout.save(output_path)
+        #we open the new croped photo for the letter recognition
+        rcParams['figure.figsize'] = 8,16
+        Reader = easyocr.Reader(['en'])
+        new(output_path)
+        output_photo = Reader.readtext(output_path)
+        global data_ocr_transfer
+        global label_results
+        data_ocr_transfer=output_photo[0][1]
+        url=("https://www.galinos.gr/web/drugs/main/drugs/{}".format(data_ocr_transfer))
+        #we format the data to the url in order to search the medicine
+        r = requests.get(url)
+        if r.status_code == 200:
+            #we do an api request to the website
+            htmldata=r.text
+            #with htmldata we take the results from the request and we make them a text
+            soup = BeautifulSoup(htmldata, 'html.parser') 
+            s_1 = soup.find('div', class_='container-lg my-4')
+            copy_data=""
+            data_1=""
+            for data_1 in s_1.find_all("p"):  
+                copy_data+=data_1.get_text()
+            label_results=str(copy_data)
+        else:
+            label_results="The data from the photo must be unclear,or a problem with the search"
+
+In the MenuPage we create only one function which will open the file manager from the device and the users can choose a photo to search. The photo is getting chopped and with optical recognition  it converts into text and search it.
+def search_photo(self):
+        #with the search_photo function we crop the current photo that we took
+        global folder
+        path=folder
+        global photo
+        global date
+        photo="{}/IMG_{}.png".format(path,date)
+        image_input=Image.open(photo)
+        outpout=remove(image_input)
+        output_path="{}/photo_sample.png".format(path)
+        outpout.save(output_path)
+        #we open the new croped photo for the letter recognition
+        rcParams['figure.figsize'] = 8,16
+        Reader = easyocr.Reader(['en'])
+        new(output_path)
+        output_photo = Reader.readtext(output_path)
+        global data_ocr_transfer
+        global label_results
+        data_ocr_transfer=output_photo[0][1]
+        url=("https://www.galinos.gr/web/drugs/main/drugs/{}".format(data_ocr_transfer))
+        #we format the data to the url in order to search the medicine
+        r = requests.get(url)
+        if r.status_code == 200:
+            #we do an api request to the website
+            htmldata=r.text
+            #with htmldata we take the results from the request and we make them a text
+            soup = BeautifulSoup(htmldata, 'html.parser') 
+            s_1 = soup.find('div', class_='container-lg my-4')
+            copy_data=""
+            data_1=""
+            for data_1 in s_1.find_all("p"):  
+                copy_data+=data_1.get_text()
+            label_results=str(copy_data)
+        else:
+            label_results="The data from the photo must be unclear,or a problem with the search"
+
+Finally we create the MyScreenManager class that it has the pass keyword (it’s python’s keyword) then we create the class named build which will build the app and it returns the MyScreenManager and finally we run the app if the condition __name__ is equal to __main__
+#we create our class which will manage the screen for the pages from before
+class MyScreenManager(ScreenManager):
+    pass        
+
+#we create our app's class with the App library to create our app functional and ready to be used
+class MyApp(App):
+    #we build our app 
+    def build(self):
+        return MyScreenManager()
+    
+#we run our app
+if __name__=="__main__":
+    MyApp().run()
+
+Instructions to install python 3.12.1:
+•	Link for the installation: https://www.python.org/downloads/release/python-3121/
+•	Otherwise go to python.org
+•	Then downloads 
+•	All realeases and search for 3.12.1
+installation for windows 11
+first step check the option fuctures that will be mentioned (Documentation,pip,tcl/tk and IDE,Python test suite,py launcher)
+#second step advanced options,check the 2 followings (create shortcuts for installed applications,add python to environment virables)
+step 3 choose where to install python and copy the path for the next step
+step 4 install
+step 5 open (Edit the system environment variables),they are on
+the control panel
+step 6 go to the Environmet variables,the button is down and right on the screen
+step 7 double click to the Path,it is on the user variables for (it has your username)
+step 8 check if python path is there (the form of the python is (the path that you chose before\Python\Python312))
+else press the button named New
+paste the path that you coppied before (check the name if it ends with (\Python\Python312))
+step 9 press the button named New
+and paste the previous path and add this (\Scripts)
+step 10 press the ok buttons on any window that opened before and you are ready
+
+*1 galinos website (https://www.galinos.gr/web/drugs/main/lists/drugs) is a Greek website that gives to users information about medicines in greek language of course. 
+*2 the code for galinos that we used is the files galinos_depon_search.txt and galinos_vibramycin_search.txt 
