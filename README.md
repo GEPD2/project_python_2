@@ -50,3 +50,9 @@ graph LR
     C --> I
     F --> I
 ```
+Library	Purpose	Version	Docs
+<img src="https://kivy.org/logos/kivy-logo-black-64.png" width="40">	Kivy	Cross-platform GUI framework	≥ 2.0	📚
+<img src="https://requests.readthedocs.io/en/latest/_static/requests-sidebar.png" width="40">	Requests	HTTP requests handling	2.28+	📚
+<img src="https://www.crummy.com/software/BeautifulSoup/bs4/doc/_static/bs4.png" width="40">	BeautifulSoup	HTML/XML parsing	4.11+	📚
+<img src="https://github.com/danielgatis/rembg/raw/main/docs/icon.png" width="40">	Rembg	Background removal	2.0+	📚
+<img src="https://github.com/JaidedAI/EasyOCR/raw/master/examples/logo.png" width="40">
