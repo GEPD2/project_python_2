@@ -58,3 +58,19 @@ graph LR
 <img src="https://github.com/danielgatis/rembg/raw/main/docs/icon.png" width="40">	         |  Rembg	Background removal	        | 2.0+	         |📚 Docs  |
 <img src="https://github.com/JaidedAI/EasyOCR/raw/master/examples/logo.png" width="40">	     |  EasyOCR	Text recognition	        | 1.6+	         |📚 Docs  |
 
+## 📊 Technology Distribution
+
+```mermaid
+pie showData
+    title Feature Weighting
+    "GUI Framework" : 35
+    "Web Scraping" : 25 
+    "Image Processing" : 30
+    "Text Recognition" : 10
+```
+
+**Legend**:
+- GUI: Kivy implementation
+- Web: Requests + BeautifulSoup
+- Imaging: Rembg pipeline
+- OCR: EasyOCR integration
