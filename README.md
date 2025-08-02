@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.8+-blue)
 ![Kivy](https://img.shields.io/badge/Kivy-2.0+-green)
-![License](https://img.shields.io/badge/License-MIT-yellow)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A smart medicine search application that combines text and image recognition to provide drug information from [galinos.gr](https://www.galinos.gr).
 
